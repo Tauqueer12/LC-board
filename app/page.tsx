@@ -10,7 +10,7 @@ import {zodResolver} from "@hookform/resolvers/zod"
 
 const formSchema = z.object({
     problemId: z.string().min(1, {
-        message: "Problem ID must be at least 1 characters.",
+        message: "Problem ID must contain at least 1 character.",
     }),
 })
 
@@ -46,6 +46,7 @@ export default function ProblemForm() {
                                             </FormDescription>
                                             <FormMessage/>
                                         </FormItem>
+                                        
                                     )}
                                 />
                                 <Button type="submit">Submit</Button>
