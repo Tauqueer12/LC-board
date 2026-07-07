@@ -1,19 +1,19 @@
-import {initializeApp} from "firebase/app";
-import {getAuth} from "firebase/auth";
+import { initializeApp } from "firebase/app";
+import { getAuth } from "firebase/auth";
 
-import {getFirestore, collection, doc, setDoc} from 'firebase/firestore/lite';
+import { getFirestore, collection, doc, setDoc } from 'firebase/firestore/lite';
 
 
 // TODO: Replace the following with your app's Firebase project configuration
 // See: https://firebase.google.com/docs/web/learn-more#config-object
 const firebaseConfig = {
-    apiKey: "AIzaSyBrlyEKMEOU9hTHYqxV5F09eXq011Np9vM",
-    authDomain: "programmer-s-board.firebaseapp.com",
-    projectId: "programmer-s-board",
-    storageBucket: "programmer-s-board.appspot.com",
-    messagingSenderId: "562566424848",
-    appId: "1:562566424848:web:1d86fc2c84e7287bdddd95",
-    measurementId: "G-J4K7CT5YCS"
+    apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
+    authDomain: "lc-board-app.firebaseapp.com",
+    projectId: "lc-board-app",
+    storageBucket: "lc-board-app.firebasestorage.app",
+    messagingSenderId: "939340153185",
+    appId: "1:939340153185:web:a0d26ba06a41eb391f8520",
+    measurementId: "G-EGQCD2TS6P"
 };
 
 // Initialize Firebease
