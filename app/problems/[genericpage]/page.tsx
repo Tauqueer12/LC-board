@@ -14,21 +14,34 @@ const ExcalidrawWrapper = dynamic(
 
 export default function GenericPage() {
     // statement fetching starts
-    const [statement11, setStatement11] = useState("Please wait for the backend server to spin up !!");
+    const [statement11, setStatement11] = useState("");
+    const [isLoading, setIsLoading] = useState(true);
     const params = useParams();
     const {genericpage} = params;
 
     useEffect(() => {
-        fetch(`https://leetcode-question-graphql.onrender.com/problem?id=${genericpage}`).then((response) => {
-            console.log("called");
-            response.json().then((data) => {
+        const fetchProblem = async () => {
+            setIsLoading(true);
+            try {
+                const response = await fetch(`https://leetcode-question-graphql.onrender.com/problem?id=${genericpage}`);
+                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                
+                const data = await response.json();
+                
                 if (data.question == null) {
                     setStatement11("<p>Unable to fetch the question. Contact Administrator!</p>");
                 } else {
                     setStatement11(data.question.content);
                 }
-            });
-        });
+            } catch (error) {
+                console.error("Error fetching problem:", error);
+                setStatement11("<p>Failed to connect to the backend server. Please try again later.</p>");
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        fetchProblem();
     }, [genericpage]); // Only run this effect when genericpage changes
 
     // page title
@@ -77,7 +90,14 @@ export default function GenericPage() {
                 >
                     <strong>Problem Statement:</strong>
                     <br/><br/><br/>
-                    {parse(statement11)}
+                    {isLoading ? (
+                        <div className="flex flex-col items-center justify-center mt-10 text-gray-500">
+                            <div className="w-8 h-8 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin mb-4"></div>
+                            <p className="animate-pulse">Loading problem from backend server...</p>
+                        </div>
+                    ) : (
+                        parse(statement11)
+                    )}
                 </div>
                 <div
                     className="resizer w-2 bg-gray-300 cursor-col-resize"
