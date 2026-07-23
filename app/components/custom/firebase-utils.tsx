@@ -24,36 +24,12 @@ export function checkUserState(setUserState: Dispatch<SetStateAction<string>>) {
     });
 }
 
-export function signupUser(email: string, password: string) {
-    createUserWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
-            // Signed up
-            console.log("user signed up !")
-            const user = userCredential.user;
-            console.log(user)
-            // ...
-        })
-        .catch((error) => {
-            const errorCode = error.code;
-            const errorMessage = error.message;
-            console.log(errorCode, " : ", errorMessage);
-            // ..
-        });
+export async function signupUser(email: string, password: string) {
+    return createUserWithEmailAndPassword(auth, email, password);
 }
 
-export function loginUser(email: string, password: string) {
-    signInWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
-            console.log("congrats , user signed in ")
-            // Signed in
-            const user = userCredential.user;
-            // ...
-        })
-        .catch((error) => {
-            console.log("credential do not match !!");
-            const errorCode = error.code;
-            const errorMessage = error.message;
-        });
+export async function loginUser(email: string, password: string) {
+    return signInWithEmailAndPassword(auth, email, password);
 }
 
 export async function setBoardData(user: string, pid: string, content: string, sceneVersion: number) {

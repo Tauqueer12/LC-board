@@ -12,9 +12,12 @@ const loginFormSchema = z.object({
 
 export default function LoginProfileForm(form: any) {
     const router = useRouter();
-    return function onSubmit(values: z.infer<typeof loginFormSchema>) {
-        // user sign in
-        loginUser(values.email, values.password)
-        router.push(`/`)
+    return async function onSubmit(values: z.infer<typeof loginFormSchema>) {
+        try {
+            await loginUser(values.email, values.password);
+            router.push(`/`);
+        } catch (error: any) {
+            form.setError('root', { message: 'Invalid email or password.' });
+        }
     }
 }

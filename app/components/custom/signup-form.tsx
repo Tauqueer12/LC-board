@@ -2,8 +2,6 @@
 
 import {z} from "zod"
 import {useRouter} from "next/navigation"
-import {auth} from "../custom/firebase-auth"
-import {createUserWithEmailAndPassword} from "firebase/auth";
 import {signupUser} from '@/app/components/custom/firebase-utils';
 
 
@@ -23,10 +21,13 @@ const signupFormSchema = z.object({
 
 export default function SignupProfileForm(form: any) {
     const router = useRouter();
-    return function onSubmit(values: z.infer<typeof signupFormSchema>) {
-        // user signup
-        signupUser(values.email, values.password)
-        router.push(`/`)
+    return async function onSubmit(values: z.infer<typeof signupFormSchema>) {
+        try {
+            await signupUser(values.email, values.password);
+            router.push(`/`);
+        } catch (error: any) {
+            form.setError('root', { message: error.message || 'Failed to sign up.' });
+        }
     }
 }
 
