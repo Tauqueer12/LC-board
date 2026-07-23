@@ -44,17 +44,15 @@ export async function setBoardData(user: string, pid: string, content: string, s
     }
 }
 
-export async function getBoardData(user: string, pid: string, sceneVersion: number) {
+export async function getBoardData(user: string, pid: string) {
     const docRef = doc(db, user, pid);
     const docSnap = await getDoc(docRef);
 
     if (docSnap.exists()) {
-        console.log("Document data:", docSnap.data());
+        return docSnap.data();
     } else {
-        // docSnap.data() will be undefined in this case
-        console.log("No such document!");
+        return null;
     }
-
 }
 
 export async function getUserData(user: string) {
