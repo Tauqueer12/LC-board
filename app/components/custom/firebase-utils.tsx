@@ -1,8 +1,7 @@
 import {auth, db} from "./firebase-auth"
 import {createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signOut} from 'firebase/auth';
 import {Dispatch, SetStateAction} from 'react';
-import {collection, doc, setDoc} from 'firebase/firestore/lite';
-import {getDoc, getDocs} from '@firebase/firestore';
+import {collection, doc, setDoc, getDoc, getDocs} from 'firebase/firestore/lite';
 
 
 export function signout(setUserState: Dispatch<SetStateAction<string>>) {
