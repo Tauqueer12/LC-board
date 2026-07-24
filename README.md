@@ -17,6 +17,12 @@
 - **Offline/Guest Fallbacks:** Leverages client-side browser `localStorage` to quietly serialize and save your board states if you prefer not to create an account.
 - **Dynamic Client-Side Canvas:** Safely sidesteps Next.js Server-Side Rendering (SSR) constraints by dynamically booting the heavy HTML5 Excalidraw canvas strictly during browser execution (`next/dynamic`).
 
+## 📸 Screenshots
+
+| View 1 | View 2 | View 3 |
+| :---: | :---: | :---: |
+| <img src="./assets/Screenshot%202026-07-24%20230905.png" width="300" /> | <img src="./assets/Screenshot%202026-07-24%20230933.png" width="300" /> | <img src="./assets/Screenshot%202026-07-24%20230953.png" width="300" /> |
+
 ##  Technology Stack
 
 - **Framework:** Next.js 14 (App Router Architecture)
