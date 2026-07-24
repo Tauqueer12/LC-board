@@ -1,15 +1,15 @@
-import {Excalidraw, MainMenu, serializeAsJSON, WelcomeScreen, getSceneVersion} from "@excalidraw/excalidraw"
-import {ExcalidrawElement} from "@excalidraw/excalidraw/types/element/types"
-import {AppState, BinaryFiles} from "@excalidraw/excalidraw/types/types"
-import {useState, useEffect, useRef} from "react"
-import {onAuthStateChanged} from "firebase/auth"
-import {auth} from "./firebase-auth"
-import {getBoardData, setBoardData} from "./firebase-utils"
+import { Excalidraw, MainMenu, serializeAsJSON, WelcomeScreen, getSceneVersion } from "@excalidraw/excalidraw"
+import { ExcalidrawElement } from "@excalidraw/excalidraw/types/element/types"
+import { AppState, BinaryFiles } from "@excalidraw/excalidraw/types/types"
+import { useState, useEffect, useRef } from "react"
+import { onAuthStateChanged } from "firebase/auth"
+import { auth } from "./firebase-auth"
+import { getBoardData, setBoardData } from "./firebase-utils"
 
-const ExcalidrawWrapper: React.FC<{ probID: string | string[] }> = ({probID}) => {
+const ExcalidrawWrapper: React.FC<{ probID: string | string[] }> = ({ probID }) => {
     const [initialData, setInitialData] = useState<any>(null);
     const [isLoading, setIsLoading] = useState(true);
-    const [userEmail, setUserEmail] = useState<string | null>(null);
+    const [userId, setUserId] = useState<string | null>(null);
     const debounceTimeout = useRef<NodeJS.Timeout | null>(null);
     const sceneVersion = useRef(0);
     const isMounted = useRef(true);
@@ -18,10 +18,10 @@ const ExcalidrawWrapper: React.FC<{ probID: string | string[] }> = ({probID}) =>
         isMounted.current = true;
         const unsubscribe = onAuthStateChanged(auth, async (user) => {
             const probIdStr = probID.toString();
-            if (user && user.email) {
-                setUserEmail(user.email);
+            if (user && user.uid) {
+                setUserId(user.uid);
                 // Load from Firestore
-                const data = await getBoardData(user.email, probIdStr);
+                const data = await getBoardData(user.uid, probIdStr);
                 if (isMounted.current) {
                     if (data && data.content) {
                         setInitialData(JSON.parse(data.content));
@@ -34,7 +34,7 @@ const ExcalidrawWrapper: React.FC<{ probID: string | string[] }> = ({probID}) =>
                     setIsLoading(false);
                 }
             } else {
-                setUserEmail(null);
+                setUserId(null);
                 // Load from local storage for guests
                 if (isMounted.current) {
                     const localContent = localStorage.getItem(`excalidraw-${probIdStr}`);
@@ -60,15 +60,15 @@ const ExcalidrawWrapper: React.FC<{ probID: string | string[] }> = ({probID}) =>
             sceneVersion.current = currentVersion;
             const probIdStr = probID.toString();
             const content = serializeAsJSON(elements, appState, files, "local");
-            
+
             // Always save to local storage as fallback/guest
             localStorage.setItem(`excalidraw-${probIdStr}`, content);
 
             // Debounced save to Firestore (1 second delay after drawing stops)
-            if (userEmail) {
+            if (userId) {
                 if (debounceTimeout.current) clearTimeout(debounceTimeout.current);
                 debounceTimeout.current = setTimeout(() => {
-                    setBoardData(userEmail, probIdStr, content, currentVersion);
+                    setBoardData(userId, probIdStr, content, currentVersion);
                 }, 1000);
             }
         }
@@ -93,20 +93,20 @@ const ExcalidrawWrapper: React.FC<{ probID: string | string[] }> = ({probID}) =>
                         <WelcomeScreen.Hints.ToolbarHint>
                             <p> ToolBar Hints </p>
                         </WelcomeScreen.Hints.ToolbarHint>
-                        <WelcomeScreen.Hints.MenuHint/>
-                        <WelcomeScreen.Hints.HelpHint/>
+                        <WelcomeScreen.Hints.MenuHint />
+                        <WelcomeScreen.Hints.HelpHint />
                         <WelcomeScreen.Center.Heading>
                             Welcome to LC-Board !!
                         </WelcomeScreen.Center.Heading>
                     </WelcomeScreen.Center>
                 </WelcomeScreen>
                 <MainMenu>
-                    <MainMenu.DefaultItems.LoadScene/>
-                    <MainMenu.DefaultItems.Export/>
-                    <MainMenu.DefaultItems.SaveAsImage/>
-                    <MainMenu.DefaultItems.ClearCanvas/>
-                    <MainMenu.DefaultItems.ChangeCanvasBackground/>
-                    <MainMenu.DefaultItems.Help/>
+                    <MainMenu.DefaultItems.LoadScene />
+                    <MainMenu.DefaultItems.Export />
+                    <MainMenu.DefaultItems.SaveAsImage />
+                    <MainMenu.DefaultItems.ClearCanvas />
+                    <MainMenu.DefaultItems.ChangeCanvasBackground />
+                    <MainMenu.DefaultItems.Help />
                 </MainMenu>
             </Excalidraw>
         </div>
