@@ -23,7 +23,7 @@ export default function GenericPage() {
         const fetchProblem = async () => {
             setIsLoading(true);
             try {
-                const response = await fetch(`https://leetcode-question-graphql.onrender.com/problem?id=${genericpage}`);
+                const response = await fetch(`/api/leetcode?id=${genericpage}`);
                 if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
                 
                 const data = await response.json();

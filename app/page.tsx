@@ -10,16 +10,17 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { outfit } from "@/lib/fonts"
 
 const formSchema = z.object({
-    problemId: z.string().min(1, {
-        message: "Problem ID must contain at least 1 character.",
-    }),
+    problemId: z.string()
+        .min(1, { message: "Problem ID is required." })
+        .max(5, { message: "Problem ID is too long." })
+        .regex(/^\d+$/, { message: "Problem ID must be a number (e.g. 1)." }),
 })
 
 export default function ProblemForm() {
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            problemId: "123",
+            problemId: "",
         },
     })
     let onSubmit = ProfileForm(form)
@@ -41,12 +42,12 @@ export default function ProblemForm() {
                                     name="problemId"
                                     render={({ field }) => (
                                         <FormItem>
-                                            <FormLabel>Problem ID</FormLabel>
+                                            <FormLabel>Problem Number</FormLabel>
                                             <FormControl>
-                                                <Input placeholder="123" {...field} />
+                                                <Input placeholder="1" {...field} />
                                             </FormControl>
                                             <FormDescription>
-                                                This is the problem ID of your leetcode question.
+                                                Enter the LeetCode problem number (e.g. 1 for Two Sum).
                                             </FormDescription>
                                             <FormMessage />
                                         </FormItem>
