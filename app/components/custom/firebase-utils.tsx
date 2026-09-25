@@ -55,10 +55,11 @@ export async function getBoardData(user: string, pid: string) {
 }
 
 export async function getUserData(user: string) {
-    console.log("fetching started :", user);
     const docRef = collection(db, user);
     const docSnaps = await getDocs(docRef);
 
-    const events = docSnaps.docs.map((doc: any) => doc.data())
-    console.log(events);
+    return docSnaps.docs.map((doc: any) => ({
+        id: doc.id,
+        ...doc.data()
+    }));
 }
