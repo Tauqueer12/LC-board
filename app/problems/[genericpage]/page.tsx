@@ -44,8 +44,7 @@ export default function GenericPage() {
         fetchProblem();
     }, [genericpage]); // Only run this effect when genericpage changes
 
-    // page title
-    const pageTitle: string = `PB - ${genericpage}`;
+
 
     // dragger implementation starts
     const [columnWidth, setColumnWidth] = useState<number>(30); // Initial width set to 30%
@@ -108,7 +107,7 @@ export default function GenericPage() {
                     className="h-full w-full"
                     style={{width: `${100 - columnWidth}%`}}
                 >
-                    <ExcalidrawWrapper probID={pageTitle}/>
+                    <ExcalidrawWrapper probID={genericpage}/>
                 </div>
             </div>
         </div>

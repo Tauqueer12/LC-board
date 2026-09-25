@@ -13,7 +13,7 @@ const ExcalidrawWrapper = dynamic(
 )
 export default function WhiteBoard() {
     const genericpage = "Default"
-    const pageTitle: string = `PB - ${genericpage}`
+    const pageTitle: string = `${genericpage}`
     return (
         <>
             <title>{pageTitle}</title>
