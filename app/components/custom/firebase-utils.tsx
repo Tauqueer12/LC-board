@@ -15,7 +15,6 @@ export function signout(setUserState: Dispatch<SetStateAction<string>>) {
 export function checkUserState(setUserState: Dispatch<SetStateAction<string>>) {
     onAuthStateChanged(auth, (user) => {
         if (user) {
-            console.log("changed to signout")
             setUserState("Signout");
         } else {
             console.log("not signed in")
@@ -37,29 +36,38 @@ export async function setBoardData(user: string, pid: string, content: string, s
             content: content,
             sceneVersion: sceneVersion
         });
-        console.log("task successfully completed");
     } catch (e) {
         console.error('Unsuccessful', e);
     }
 }
 
 export async function getBoardData(user: string, pid: string) {
-    const docRef = doc(db, user, pid);
-    const docSnap = await getDoc(docRef);
+    try {
+        const docRef = doc(db, user, pid);
+        const docSnap = await getDoc(docRef);
 
-    if (docSnap.exists()) {
-        return docSnap.data();
-    } else {
+        if (docSnap.exists()) {
+            return docSnap.data();
+        } else {
+            return null;
+        }
+    } catch (e) {
+        console.error("Error fetching board data:", e);
         return null;
     }
 }
 
 export async function getUserData(user: string) {
-    const docRef = collection(db, user);
-    const docSnaps = await getDocs(docRef);
+    try {
+        const docRef = collection(db, user);
+        const docSnaps = await getDocs(docRef);
 
-    return docSnaps.docs.map((doc: any) => ({
-        id: doc.id,
-        ...doc.data()
-    }));
+        return docSnaps.docs.map((doc: any) => ({
+            id: doc.id,
+            ...doc.data()
+        }));
+    } catch (e) {
+        console.error("Error fetching user data:", e);
+        return [];
+    }
 }

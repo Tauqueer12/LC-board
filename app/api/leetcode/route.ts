@@ -8,10 +8,15 @@ const LEETCODE_HEADERS = {
 
 // Resolve a numeric problem ID to a LeetCode titleSlug using lcid.cc
 async function resolveSlug(id: string): Promise<string | null> {
-    const res = await fetch(`https://lcid.cc/info/${id}`);
-    if (!res.ok) return null;
-    const data = await res.json();
-    return data?.titleSlug ?? null;
+    try {
+        const res = await fetch(`https://lcid.cc/info/${id}`);
+        if (!res.ok) return null;
+        const data = await res.json();
+        return data?.titleSlug ?? null;
+    } catch (e) {
+        console.error("Error resolving slug via lcid.cc:", e);
+        return null;
+    }
 }
 
 export async function GET(request: Request) {

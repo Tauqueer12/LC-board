@@ -1,6 +1,5 @@
 "use client"
 import dynamic from "next/dynamic"
-import {useParams} from "next/navigation"
 
 // Since client components get prerenderd on server as well hence importing
 // the excalidraw stuff dynamically with ssr false
