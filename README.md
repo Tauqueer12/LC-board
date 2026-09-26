@@ -11,6 +11,7 @@
 ##  Features
 
 - **Split-Pane Workspace:** A fluid, resizable interface that displays the raw LeetCode problem statement on one side, and an interactive digital Excalidraw whiteboard on the other.
+- **Problem Archive:** A dedicated, auth-gated library page that automatically aggregates and displays all your previously saved whiteboards, allowing you to instantly jump back into past problem-solving sessions.
 - **Native Next.js GraphQL API:** Completely self-hosted backend API route that directly queries LeetCode's GraphQL server, eliminating reliance on unstable 3rd-party proxies or CORS workarounds.
 - **Smart ID Resolution:** Forget memorizing slugs. Simply type a LeetCode problem number (e.g., `1`), and the backend intelligently resolves it to the correct problem slug using `lcid.cc` before fetching the content.
 - **Firebase Sync & Auth:** Secure Authentication and Firestore Database integration. Your complex whiteboard drawings are automatically saved to the cloud under your secure `user.uid` so they are never lost.
@@ -51,6 +52,7 @@ Because the Excalidraw canvas relies heavily on browser APIs (`window`, `localSt
 The whiteboard engine isolates drawing mathematics from standard React states to maintain 60FPS performance. 
 *   **Debouncing:** As the user draws, the state is serialized into JSON. To prevent database spam, a debouncer waits for a 1-second pause in drawing before saving.
 *   **Dual-Storage:** The JSON is immediately saved to the browser's `localStorage` (for guests/offline recovery) and simultaneously pushed to Firebase Firestore (under `/{user.uid}/{problemId}`) if the user is authenticated.
+*   **Data Retrieval & Archiving:** Authenticated users have their own `/archive` library, which fetches all documents stored under their specific `user.uid` collection, generating a quick-access list of all previously solved problems.
 
 ## Getting Started
 
